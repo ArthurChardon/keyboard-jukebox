@@ -1,0 +1,14 @@
+input+.guessr-note {
+    background-color: var(--primary-foreground);
+    border-color: var(--border);
+}
+
+input:focus+.guessr-note {
+    background-color: var(--secondary);
+    border-color: var(--card-foreground);
+}
+
+.guessr-note--note {
+    font-size: 10rem;
+    line-height: 100%;
+}

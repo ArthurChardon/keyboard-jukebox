@@ -1,9 +1,8 @@
-import { useState } from "react";
-import "./App.css";
+import "./Sandbox.css";
+import Touche from "../Touche/Touche";
 import useSound from "use-sound";
-import Guessr from "./components/Guessr/Guessr";
 
-function App() {
+function Sandbox() {
   const soundsPath = "/sounds/piano/";
 
   const wiiSound = "1243215 345878531232 345878124325699 1243215 8940985";
@@ -96,9 +95,21 @@ function App() {
 
   return (
     <>
-      <Guessr></Guessr>
+      <Touche keyToPress="1" clicked={() => clickKey("1")}></Touche>
+      <Touche keyToPress="2" clicked={() => clickKey("2")}></Touche>
+      <Touche keyToPress="3" clicked={() => clickKey("3")}></Touche>
+      <Touche keyToPress="4" clicked={() => clickKey("4")}></Touche>
+      <Touche keyToPress="5" clicked={() => clickKey("5")}></Touche>
+      <Touche keyToPress="6" clicked={() => clickKey("6")}></Touche>
+      <Touche keyToPress="7" clicked={() => clickKey("7")}></Touche>
+      <Touche keyToPress="8" clicked={() => clickKey("8")}></Touche>
+      <Touche keyToPress="9" clicked={() => clickKey("9")}></Touche>
+      <Touche keyToPress="0" clicked={() => clickKey("0")}></Touche>
+      <Touche keyToPress="J" clicked={() => clickKey("J")}></Touche>
+      <Touche keyToPress="K" clicked={() => clickKey("K")}></Touche>
+      <Touche keyToPress="L" clicked={() => clickKey("L")}></Touche>
     </>
   );
 }
 
-export default App;
+export default Sandbox;
