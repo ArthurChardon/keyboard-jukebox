@@ -2,7 +2,8 @@ import useSound from "use-sound";
 import Touche from "../Touche/Touche";
 import "./Guessr.css";
 import GuessrNote from "./GuessrNote/GuessrNote";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { NoteResult } from "@/types/guessr.types";
 
 function Guessr() {
   const wiiSound = {
@@ -45,25 +46,77 @@ function Guessr() {
       re_1_diese: [229120, 5000],
     },
   });
+
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      switch (e.key) {
+        case "Enter":
+          submitTriesSound();
+          return;
+
+        case "Home":
+          setCurrentIndex(0);
+          return;
+
+        case "End":
+          setCurrentIndex(triesSound.length - 1);
+          return;
+
+        case "ArrowRight":
+          setCurrentIndex((index) => index + 1);
+          return;
+
+        case "ArrowLeft":
+          setCurrentIndex((index) => index - 1);
+          return;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const roundSound = wiiSound.notes.split(" ")[0];
   const givenNotes = wiiSound.givenNotes;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [triesSound, setTriesSound] = useState(
-    Array.from({ length: roundSound.length }, (v, k) =>
-      givenNotes.includes(k) ? roundSound[k] : null
-    )
+    Array.from({ length: roundSound.length }, (v, k) => ({
+      note: givenNotes.includes(k) ? roundSound[k] : null,
+      result: givenNotes.includes(k) ? NoteResult.CORRECT : null,
+    }))
   );
 
-  const firstAbsentNoteIndex = triesSound.indexOf(null) ?? 0;
-
   const inputEmitted = (index: number, key: string) => {
+    if (key === "DELETE") {
+      setCurrentIndex((index) => index - 1);
+      removeCurrentNote();
+      return;
+    }
     const tempTriesSound = [...triesSound];
-    tempTriesSound[index] = key;
+    tempTriesSound[index].note = key;
 
     clickKey(key);
     setTriesSound(tempTriesSound);
-    setCurrentIndex(currentIndex + 1);
+    setCurrentIndex(index + 1);
+  };
+
+  const submitTriesSound = () => {
+    const tempTriesSound = [...triesSound];
+    for (let i = 0; i < triesSound.length; i++) {
+      tempTriesSound[i].result =
+        triesSound[i].note === roundSound[i]
+          ? NoteResult.CORRECT
+          : NoteResult.WRONG;
+    }
+    setTriesSound(tempTriesSound);
+  };
+
+  const removeCurrentNote = () => {
+    const triesSoundTemp = [...triesSound];
+    triesSoundTemp[currentIndex].note = null;
+    setTriesSound(triesSoundTemp);
   };
 
   const clickKey = (keyPressed: string) => {
@@ -128,10 +181,11 @@ function Guessr() {
       <h2>Wii sound</h2>
 
       <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center">
-        {Array.from(triesSound).map((note, index) => (
+        {Array.from(triesSound).map((tryNote, index) => (
           <GuessrNote
             key={index}
-            note={note}
+            note={tryNote.note}
+            result={tryNote.result}
             setFocus={index === currentIndex}
             emitInput={(key) => {
               inputEmitted(index, key);

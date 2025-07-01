@@ -1,12 +1,15 @@
 import { useEffect, useRef, type ChangeEvent } from "react";
 import "./GuessrNote.css";
+import type { NoteResult } from "@/types/guessr.types";
 
 function GuessrNote({
   note,
+  result,
   setFocus,
   emitInput,
 }: {
   note: string | null;
+  result: NoteResult | null;
   setFocus: boolean;
   emitInput: (key: string) => void;
 }) {
@@ -16,16 +19,16 @@ function GuessrNote({
     if (setFocus) focusInput();
   }, [setFocus]);
 
-  useEffect(() => {
-    if (setFocus) focusInput();
-  }, [note]);
-
   const focusInput = () => {
     if (!inputRef.current) return;
     inputRef.current.focus();
   };
 
   const manageInput = (event: ChangeEvent<HTMLInputElement>) => {
+    if ((event.nativeEvent as any).inputType === "deleteContentBackward") {
+      emitInput("DELETE");
+      return;
+    }
     const keyInput = (event.nativeEvent as any)["data"]?.toUpperCase() ?? null;
     if (keyInput) emitInput(keyInput);
   };
@@ -35,10 +38,14 @@ function GuessrNote({
       <input
         ref={inputRef}
         className="h-0 w-0"
+        value={note ?? "-"}
         onChange={(event) => manageInput(event)}
       ></input>
       <div
-        className="guessr-note h-[12rem] w-[8rem] rounded-sm border-solid border-[3px]"
+        className={
+          "guessr-note h-[12rem] w-[8rem] rounded-sm border-solid border-[3px] " +
+          (result ? "note-result-" + result : "")
+        }
         onClick={focusInput}
       >
         <span className="guessr-note--note">{note}</span>
