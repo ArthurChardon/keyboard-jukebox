@@ -1,17 +1,27 @@
 input+.guessr-note {
     background-color: var(--primary-foreground);
     border-color: var(--border);
+    height: 8rem;
+    width: 5.3rem;
+
+    .guessr-note--note {
+        font-size: 6.6rem;
+        line-height: 100%;
+    }
 }
 
 input:focus+.guessr-note {
     background-color: var(--secondary);
     border-color: var(--card-foreground);
+    height: 12rem;
+    width: 8rem;
+
+    .guessr-note--note {
+        font-size: 10rem;
+    }
 }
 
-.guessr-note--note {
-    font-size: 10rem;
-    line-height: 100%;
-}
+
 
 .guessr-note {
     position: relative;

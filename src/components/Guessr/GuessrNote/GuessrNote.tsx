@@ -43,7 +43,7 @@ function GuessrNote({
       ></input>
       <div
         className={
-          "guessr-note h-[12rem] w-[8rem] rounded-sm border-solid border-[3px] " +
+          "guessr-note rounded-sm border-solid border-[3px] " +
           (result ? "note-result-" + result : "")
         }
         onClick={focusInput}

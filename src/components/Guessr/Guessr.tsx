@@ -2,14 +2,20 @@ import useSound from "use-sound";
 import Touche from "../Touche/Touche";
 import "./Guessr.css";
 import GuessrNote from "./GuessrNote/GuessrNote";
-import { useEffect, useState } from "react";
-import { NoteResult } from "@/types/guessr.types";
+import { useEffect, useRef, useState } from "react";
+import { NoteResult, Phase } from "@/types/guessr.types";
+import GuessrValidatedNote from "./GuessrValidatedNote/GuessrValidatedNote";
 
 function Guessr() {
-  const wiiSound = {
-    notes: "1243215 345878531232 345878124325699 1243215 8940985",
-    givenNotes: [0, 1, 2],
-  };
+  const [gameSound, useGameSound] = useState({
+    notes: ["1243215", "345878531232", "345878124325699", "1243215", "8940985"],
+    givenNotes: [
+      [0, 1, 2],
+      [0, 1, 2],
+      [6, 7, 8],
+    ],
+  });
+  345;
 
   const touches = [
     { key: "1", label: "Do" },
@@ -51,7 +57,7 @@ function Guessr() {
     const handleKeyDown = (e: any) => {
       switch (e.key) {
         case "Enter":
-          submitTriesSound();
+          setPhase(Phase.SUBMIT);
           return;
 
         case "Home":
@@ -77,16 +83,39 @@ function Guessr() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const roundSound = wiiSound.notes.split(" ")[0];
-  const givenNotes = wiiSound.givenNotes;
-
+  const [roundIndex, setRoundIndex] = useState(0);
+  const [roundSound, setRoundSound] = useState(gameSound.notes[roundIndex]);
+  const [givenNotes, setGivenNotes] = useState(
+    gameSound.givenNotes[roundIndex]
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [validatedRoundSound, setValidatedRoundSound] = useState<string[]>([]);
+
   const [triesSound, setTriesSound] = useState(
     Array.from({ length: roundSound.length }, (v, k) => ({
       note: givenNotes.includes(k) ? roundSound[k] : null,
       result: givenNotes.includes(k) ? NoteResult.CORRECT : null,
     }))
   );
+
+  const [phase, setPhase] = useState(Phase.GUESS);
+
+  const submitInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setRoundSound(gameSound.notes[roundIndex]);
+    setGivenNotes(gameSound.givenNotes[roundIndex] ?? []);
+  }, [roundIndex, gameSound]);
+
+  useEffect(() => {
+    setTriesSound(
+      Array.from({ length: roundSound.length }, (v, k) => ({
+        note: givenNotes.includes(k) ? roundSound[k] : null,
+        result: givenNotes.includes(k) ? NoteResult.CORRECT : null,
+      }))
+    );
+    setCurrentIndex(0);
+  }, [roundSound, givenNotes]);
 
   const inputEmitted = (index: number, key: string) => {
     if (key === "DELETE") {
@@ -97,18 +126,32 @@ function Guessr() {
     const tempTriesSound = [...triesSound];
     tempTriesSound[index].note = key;
 
-    clickKey(key);
     setTriesSound(tempTriesSound);
     setCurrentIndex(index + 1);
+    if (index + 1 >= triesSound.length) {
+      submitInput.current?.focus();
+      setPhase(Phase.SUBMIT);
+    }
   };
 
   const submitTriesSound = () => {
+    setPhase(Phase.GUESS);
     const tempTriesSound = [...triesSound];
     for (let i = 0; i < triesSound.length; i++) {
       tempTriesSound[i].result =
         triesSound[i].note === roundSound[i]
           ? NoteResult.CORRECT
           : NoteResult.WRONG;
+    }
+
+    if (
+      !tempTriesSound
+        .map((trySound) => trySound.result)
+        .includes(NoteResult.WRONG)
+    ) {
+      setValidatedRoundSound([...validatedRoundSound, roundSound]);
+      setRoundIndex((index) => index + 1);
+      return;
     }
     setTriesSound(tempTriesSound);
   };
@@ -175,12 +218,29 @@ function Guessr() {
     }
   };
 
+  if (phase === Phase.SUBMIT) {
+    submitTriesSound();
+  }
+
   return (
     <>
       <h1>Guessr</h1>
       <h2>Wii sound</h2>
 
-      <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center">
+      <div className="flex flex-col gap-[.5rem]">
+        {validatedRoundSound.map((round) => (
+          <div className="flex gap-[.75rem] mt-[2reù] w-full justify-center">
+            {Array.from(round).map((note, index) => (
+              <GuessrValidatedNote
+                key={index}
+                note={note}
+              ></GuessrValidatedNote>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center h-[12rem] items-end">
         {Array.from(triesSound).map((tryNote, index) => (
           <GuessrNote
             key={index}
@@ -192,6 +252,7 @@ function Guessr() {
             }}
           ></GuessrNote>
         ))}
+        <input ref={submitInput} type="submit" className="h-0 w-0"></input>
       </div>
 
       <div className="notes-keyboard flex gap-[.5rem] w-full justify-center mt-[2rem]">
