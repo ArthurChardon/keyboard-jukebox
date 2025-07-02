@@ -3,8 +3,13 @@ input+.guessr-note {
     border-color: var(--border);
     height: 8rem;
     width: 5.3rem;
+    animation: slide-in-blurred-bottom 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .guessr-note--note {
+        font-family: AlbaS;
         font-size: 6.6rem;
         line-height: 100%;
     }

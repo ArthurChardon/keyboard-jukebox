@@ -3,12 +3,8 @@ import "./GuessrValidatedNote.css";
 function GuessrValidatedNote({ note }: { note: string | null }) {
   return (
     <>
-      <div
-        className={
-          "guessr-validated-note h-[6rem] w-[4rem] rounded-sm border-solid border-[3px] "
-        }
-      >
-        <span className="guessr-validated-note--note">{note}</span>
+      <div className="guessr-validated-note h-[3rem] w-[2rem] bg-border rounded-sm flex items-center justify-center">
+        <div className="guessr-validated-note--note">{note}</div>
       </div>
     </>
   );

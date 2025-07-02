@@ -1,4 +1,9 @@
 .guessr-validated-note--note {
-    font-size: 5rem;
+    font-size: 2rem;
     line-height: 100%;
+    font-family: Alba;
+}
+
+.guessr-validated-note {
+    animation: slide-in-blurred-bottom 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
 }

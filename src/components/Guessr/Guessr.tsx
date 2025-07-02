@@ -5,18 +5,13 @@ import GuessrNote from "./GuessrNote/GuessrNote";
 import { useEffect, useRef, useState } from "react";
 import { NoteResult, Phase } from "@/types/guessr.types";
 import GuessrValidatedNote from "./GuessrValidatedNote/GuessrValidatedNote";
+import { CountdownProgress } from "../ui/countdown-progress";
 
-function Guessr() {
-  const [gameSound, useGameSound] = useState({
-    notes: ["1243215", "345878531232", "345878124325699", "1243215", "8940985"],
-    givenNotes: [
-      [0, 1, 2],
-      [0, 1, 2],
-      [6, 7, 8],
-    ],
-  });
-  345;
-
+function Guessr({
+  gameSound,
+}: {
+  gameSound: { notes: string[]; givenNotes: number[][] };
+}) {
   const touches = [
     { key: "1", label: "Do" },
     { key: "2", label: "Re" },
@@ -102,6 +97,8 @@ function Guessr() {
 
   const submitInput = useRef<HTMLInputElement>(null);
 
+  let displayRoundWinPhase = false;
+
   useEffect(() => {
     setRoundSound(gameSound.notes[roundIndex]);
     setGivenNotes(gameSound.givenNotes[roundIndex] ?? []);
@@ -149,8 +146,7 @@ function Guessr() {
         .map((trySound) => trySound.result)
         .includes(NoteResult.WRONG)
     ) {
-      setValidatedRoundSound([...validatedRoundSound, roundSound]);
-      setRoundIndex((index) => index + 1);
+      setPhase(Phase.WIN);
       return;
     }
     setTriesSound(tempTriesSound);
@@ -218,18 +214,33 @@ function Guessr() {
     }
   };
 
+  const nextRound = () => {
+    if (roundIndex + 1 === gameSound.notes.length) {
+      setPhase(Phase.WIN_GAME);
+      return;
+    }
+    setValidatedRoundSound([...validatedRoundSound, roundSound]);
+    setRoundIndex((index) => index + 1);
+    setPhase(Phase.GUESS);
+  };
+
   if (phase === Phase.SUBMIT) {
     submitTriesSound();
+  }
+
+  if (phase === Phase.WIN) {
+    displayRoundWinPhase = true;
+    nextRound();
   }
 
   return (
     <>
       <h1>Guessr</h1>
-      <h2>Wii sound</h2>
+      <h2>Wii sport</h2>
 
-      <div className="flex flex-col gap-[.5rem]">
-        {validatedRoundSound.map((round) => (
-          <div className="flex gap-[.75rem] mt-[2reù] w-full justify-center">
+      <div className="flex flex-col gap-[.5rem] mt-[2rem]">
+        {validatedRoundSound.map((round, i) => (
+          <div key={i} className="flex gap-[.75rem] w-full justify-center">
             {Array.from(round).map((note, index) => (
               <GuessrValidatedNote
                 key={index}
@@ -240,10 +251,10 @@ function Guessr() {
         ))}
       </div>
 
-      <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center h-[12rem] items-end">
+      <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center h-[12rem] items-center">
         {Array.from(triesSound).map((tryNote, index) => (
           <GuessrNote
-            key={index}
+            key={index + "-" + roundIndex}
             note={tryNote.note}
             result={tryNote.result}
             setFocus={index === currentIndex}
@@ -254,7 +265,28 @@ function Guessr() {
         ))}
         <input ref={submitInput} type="submit" className="h-0 w-0"></input>
       </div>
+      <div className="flex flex-col gap-[.5rem] mt-[2rem]">
+        {gameSound.notes.slice(roundIndex + 1).map((round, i) => (
+          <div key={i} className="flex gap-[.75rem] w-full justify-center">
+            {Array.from(round).map((note, index) => (
+              <div
+                key={index}
+                className="h-[3rem] w-[2rem] bg-border rounded-sm"
+              ></div>
+            ))}
+          </div>
+        ))}
+      </div>
 
+      {displayRoundWinPhase ? (
+        <CountdownProgress
+          className="w-1/2 mx-auto my-[2rem]"
+          duration={0}
+          callbackZero={() => nextRound()}
+        ></CountdownProgress>
+      ) : (
+        <div className="w-1/2 mx-auto my-[2rem] h-[0.5rem]"></div>
+      )}
       <div className="notes-keyboard flex gap-[.5rem] w-full justify-center mt-[2rem]">
         {touches.map((touche, index) => (
           <div key={index} className="flex-col">

@@ -48,7 +48,7 @@ function GuessrNote({
         }
         onClick={focusInput}
       >
-        <span className="guessr-note--note">{note}</span>
+        <div className="guessr-note--note">{note}</div>
       </div>
     </>
   );
