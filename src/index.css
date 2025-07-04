@@ -82,7 +82,7 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --accent: #ffb703;
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
@@ -101,6 +101,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --accent-shadow: #979695;
 }
 
 .dark {
@@ -116,7 +117,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --accent: #ffb703;
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
@@ -135,6 +136,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --accent-shadow: #979695;
 }
 
 @layer base {
@@ -152,7 +154,7 @@ h1 {
   font-size: 3rem;
 
   animation: grayScale 2s cubic-bezier(0, 1, 1, 0) infinite alternate;
-  text-shadow: 1px 1px 2px #ffb703;
+  text-shadow: 1px 1px 2px var(--accent);
 }
 
 h2 {

@@ -46,6 +46,7 @@
 }
 
 .header {
+  position: sticky;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,25 +63,25 @@
     border-radius: 4px;
 
     &:hover a {
-      box-shadow: 0.3em 0.3em #ffb703;
+      box-shadow: 0.3em 0.3em var(--accent);
     }
 
     a {
       height: fit-content;
       padding: .5rem;
-      box-shadow: 0.3em 0.3em #979695;
+      box-shadow: 0.3em 0.3em var(--accent-shadow);
       border-radius: 5px;
       transition: all 0.35s;
       border: 1px solid;
-      border-color: #979695;
+      border-color: var(--accent-shadow);
       color: #000;
     }
 
     a:hover {
-      background-color: #ffb703;
-      border-color: #ffb703;
+      background-color: var(--accent);
+      border-color: var(--accent);
       color: #fff;
-      box-shadow: -0.3em -0.3em #979695;
+      box-shadow: -0.3em -0.3em var(--accent-shadow);
     }
   }
 }

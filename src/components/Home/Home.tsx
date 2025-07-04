@@ -7,15 +7,20 @@ function Home() {
 
   return (
     <>
-      <h2>Guessr</h2>
-      {songs.map((song) => (
-        <Link
-          key={song.id}
-          to={{ pathname: "/guessr", search: `?id=${song.id}` }}
-        >
-          {song.title}
-        </Link>
-      ))}
+      <div className="flex flex-col justify-center pt-[2rem]">
+        <h2 className="game-home-title">Guessr</h2>
+        <div className="guessr-songs">
+          {songs.map((song) => (
+            <Link
+              key={song.id}
+              className="guessr-song"
+              to={{ pathname: "/guessr", search: `?id=${song.id}` }}
+            >
+              {song.title}
+            </Link>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
