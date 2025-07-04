@@ -19,3 +19,27 @@
         opacity: 1;
     }
 }
+
+.win-text {
+    display: block;
+    line-height: 100%;
+    font-family: Suse;
+    font-size: 12rem;
+    animation: letter-breathe 1s cubic-bezier(0.78, 0, 0.22, 1) forwards;
+    transform-origin: 50% 50%;
+}
+
+@keyframes letter-breathe {
+    from {
+        opacity: 0;
+        font-size: 6rem;
+        font-variation-settings: 'wght' 100;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 12rem;
+        font-variation-settings: 'wght' 900;
+    }
+}

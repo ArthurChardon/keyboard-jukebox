@@ -1,14 +1,17 @@
 import { useEffect, useRef, type ChangeEvent } from "react";
 import "./GuessrNote.css";
 import type { NoteResult } from "@/types/guessr.types";
+import { cn } from "@/lib/utils";
 
 function GuessrNote({
   note,
+  index,
   result,
   setFocus,
   emitInput,
 }: {
   note: string | null;
+  index: number;
   result: NoteResult | null;
   setFocus: boolean;
   emitInput: (key: string) => void;
@@ -37,15 +40,16 @@ function GuessrNote({
     <>
       <input
         ref={inputRef}
+        name={`note-${index}`}
         className="h-0 w-0"
         value={note ?? "-"}
         onChange={(event) => manageInput(event)}
       ></input>
       <div
-        className={
-          "guessr-note rounded-sm border-solid border-[3px] " +
-          (result ? "note-result-" + result : "")
-        }
+        className={cn(
+          "guessr-note rounded-sm border-solid border-[3px]",
+          result ? "note-result-" + result : ""
+        )}
         onClick={focusInput}
       >
         <div className="guessr-note--note">{note}</div>

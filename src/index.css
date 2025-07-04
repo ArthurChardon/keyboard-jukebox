@@ -23,6 +23,13 @@
   src: url('./fonts/omegle.ttf');
 }
 
+@font-face {
+  font-family: "Suse";
+  src: url("./fonts/SUSE-VariableFont_wght.ttf");
+  font-weight: 100 800;
+  font-style: normal;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -143,9 +150,22 @@
 h1 {
   font-family: AlbaS;
   font-size: 3rem;
+
+  animation: grayScale 2s cubic-bezier(0, 1, 1, 0) infinite alternate;
+  text-shadow: 1px 1px 2px #ffb703;
 }
 
 h2 {
   font-family: Omegle;
   font-size: 4rem;
+}
+
+@keyframes grayScale {
+  from {
+    filter: grayScale(0);
+  }
+
+  to {
+    filter: grayScale(1);
+  }
 }

@@ -1,0 +1,18 @@
+.home--title {
+    .home--title--segment {
+        display: block;
+        width: fit-content;
+        animation: grayScale 2s infinite alternate;
+        text-shadow: 1px 1px 2px #ffb703;
+    }
+}
+
+@keyframes grayScale {
+    from {
+        filter: grayScale(0);
+    }
+
+    to {
+        filter: grayScale(1);
+    }
+}

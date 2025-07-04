@@ -3,15 +3,13 @@ import Touche from "../Touche/Touche";
 import "./Guessr.css";
 import GuessrNote from "./GuessrNote/GuessrNote";
 import { useEffect, useRef, useState } from "react";
-import { NoteResult, Phase } from "@/types/guessr.types";
+import { type GuessrSong, NoteResult, Phase } from "@/types/guessr.types";
 import GuessrValidatedNote from "./GuessrValidatedNote/GuessrValidatedNote";
 import { CountdownProgress } from "../ui/countdown-progress";
+import { useSongsContext } from "@/context/SongsContext";
+import { useSearchParams } from "react-router-dom";
 
-function Guessr({
-  gameSound,
-}: {
-  gameSound: { notes: string[]; givenNotes: number[][] };
-}) {
+function Guessr({}: {}) {
   const touches = [
     { key: "1", label: "Do" },
     { key: "2", label: "Re" },
@@ -48,6 +46,10 @@ function Guessr({
     },
   });
 
+  const { songs } = useSongsContext();
+  const [searchParams] = useSearchParams();
+  const [songId, setSongId] = useState(searchParams.get("id"));
+
   useEffect(() => {
     const handleKeyDown = (e: any) => {
       switch (e.key) {
@@ -78,53 +80,81 @@ function Guessr({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const [gameSound, setGameSound] = useState<GuessrSong | null>(null);
   const [roundIndex, setRoundIndex] = useState(0);
-  const [roundSound, setRoundSound] = useState(gameSound.notes[roundIndex]);
-  const [givenNotes, setGivenNotes] = useState(
-    gameSound.givenNotes[roundIndex]
-  );
+  const [roundSound, setRoundSound] = useState("");
+  const [givenNotes, setGivenNotes] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [validatedRoundSound, setValidatedRoundSound] = useState<string[]>([]);
 
-  const [triesSound, setTriesSound] = useState(
-    Array.from({ length: roundSound.length }, (v, k) => ({
-      note: givenNotes.includes(k) ? roundSound[k] : null,
-      result: givenNotes.includes(k) ? NoteResult.CORRECT : null,
-    }))
-  );
+  const [triesSound, setTriesSound] = useState<
+    { note: string | null; result: NoteResult | null }[]
+  >([]);
 
-  const [phase, setPhase] = useState(Phase.GUESS);
+  const [phase, setPhase] = useState(Phase.LOAD);
 
   const submitInput = useRef<HTMLInputElement>(null);
 
   let displayRoundWinPhase = false;
 
   useEffect(() => {
+    setGameSound(songs.find((song) => song.id == songId) ?? null);
+    setPhase(Phase.GUESS);
+  }, [songs, songId]);
+
+  useEffect(() => {
+    if (!gameSound) return;
     setRoundSound(gameSound.notes[roundIndex]);
     setGivenNotes(gameSound.givenNotes[roundIndex] ?? []);
+
+    if (phase === Phase.WIN_GAME) {
+      setRoundSound("");
+      setGivenNotes([]);
+    }
   }, [roundIndex, gameSound]);
 
   useEffect(() => {
     setTriesSound(
       Array.from({ length: roundSound.length }, (v, k) => ({
-        note: givenNotes.includes(k) ? roundSound[k] : null,
+        note:
+          roundSound[k] == " "
+            ? " "
+            : givenNotes.includes(k)
+              ? roundSound[k]
+              : null,
         result: givenNotes.includes(k) ? NoteResult.CORRECT : null,
       }))
     );
     setCurrentIndex(0);
   }, [roundSound, givenNotes]);
 
+  if (phase === Phase.LOAD) return <div>LOADING</div>;
+
   const inputEmitted = (index: number, key: string) => {
     if (key === "DELETE") {
-      setCurrentIndex((index) => index - 1);
-      removeCurrentNote();
+      let skipper = 0;
+      while (
+        index > skipper + 1 &&
+        triesSound[index - 1 - skipper].note == " "
+      ) {
+        skipper += 1;
+      }
+      setCurrentIndex(index - 1 - skipper);
+      removeNoteAtIndex(index);
       return;
     }
     const tempTriesSound = [...triesSound];
     tempTriesSound[index].note = key;
 
     setTriesSound(tempTriesSound);
-    setCurrentIndex(index + 1);
+    let skipper = 0;
+    while (
+      index + 1 + skipper < triesSound.length &&
+      triesSound[index + 1 + skipper].note == " "
+    ) {
+      skipper += 1;
+    }
+    setCurrentIndex(index + 1 + skipper);
     if (index + 1 >= triesSound.length) {
       submitInput.current?.focus();
       setPhase(Phase.SUBMIT);
@@ -152,9 +182,9 @@ function Guessr({
     setTriesSound(tempTriesSound);
   };
 
-  const removeCurrentNote = () => {
+  const removeNoteAtIndex = (index: number) => {
     const triesSoundTemp = [...triesSound];
-    triesSoundTemp[currentIndex].note = null;
+    triesSoundTemp[index].note = null;
     setTriesSound(triesSoundTemp);
   };
 
@@ -215,12 +245,14 @@ function Guessr({
   };
 
   const nextRound = () => {
+    if (!gameSound) return;
+
+    setValidatedRoundSound([...validatedRoundSound, roundSound]);
+    setRoundIndex((index) => index + 1);
     if (roundIndex + 1 === gameSound.notes.length) {
       setPhase(Phase.WIN_GAME);
       return;
     }
-    setValidatedRoundSound([...validatedRoundSound, roundSound]);
-    setRoundIndex((index) => index + 1);
     setPhase(Phase.GUESS);
   };
 
@@ -233,49 +265,76 @@ function Guessr({
     nextRound();
   }
 
+  if (phase === Phase.WIN_GAME) {
+  }
+
   return (
     <>
-      <h1>Guessr</h1>
-      <h2>Wii sport</h2>
+      <h2>{gameSound?.title}</h2>
 
       <div className="flex flex-col gap-[.5rem] mt-[2rem]">
         {validatedRoundSound.map((round, i) => (
-          <div key={i} className="flex gap-[.75rem] w-full justify-center">
-            {Array.from(round).map((note, index) => (
-              <GuessrValidatedNote
-                key={index}
-                note={note}
-              ></GuessrValidatedNote>
-            ))}
+          <div
+            key={i}
+            className="flex gap-[.75rem] w-full justify-center items-center"
+          >
+            {Array.from(round).map((note, index) =>
+              note == " " ? (
+                <div key={index + "-" + roundIndex}>-</div>
+              ) : (
+                <GuessrValidatedNote
+                  key={index}
+                  note={note}
+                ></GuessrValidatedNote>
+              )
+            )}
           </div>
         ))}
       </div>
 
-      <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center h-[12rem] items-center">
-        {Array.from(triesSound).map((tryNote, index) => (
-          <GuessrNote
-            key={index + "-" + roundIndex}
-            note={tryNote.note}
-            result={tryNote.result}
-            setFocus={index === currentIndex}
-            emitInput={(key) => {
-              inputEmitted(index, key);
-            }}
-          ></GuessrNote>
-        ))}
-        <input ref={submitInput} type="submit" className="h-0 w-0"></input>
-      </div>
+      {phase !== Phase.WIN_GAME && (
+        <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center h-[12rem] items-center">
+          {Array.from(triesSound).map((tryNote, index) =>
+            tryNote.note == " " ? (
+              <div key={index + "-" + roundIndex}>-</div>
+            ) : (
+              <GuessrNote
+                key={index + "-" + roundIndex}
+                index={index}
+                note={tryNote.note}
+                result={tryNote.result}
+                setFocus={index === currentIndex}
+                emitInput={(key) => {
+                  inputEmitted(index, key);
+                }}
+              ></GuessrNote>
+            )
+          )}
+          <input ref={submitInput} type="submit" className="h-0 w-0"></input>
+        </div>
+      )}
+      {phase === Phase.WIN_GAME && (
+        <h3 className="win-text h-[12rem] mt-[2rem]">GAGNÉ</h3>
+      )}
       <div className="flex flex-col gap-[.5rem] mt-[2rem]">
-        {gameSound.notes.slice(roundIndex + 1).map((round, i) => (
-          <div key={i} className="flex gap-[.75rem] w-full justify-center">
-            {Array.from(round).map((note, index) => (
-              <div
-                key={index}
-                className="h-[3rem] w-[2rem] bg-border rounded-sm"
-              ></div>
-            ))}
-          </div>
-        ))}
+        {gameSound &&
+          gameSound.notes.slice(roundIndex + 1).map((round, i) => (
+            <div
+              key={i}
+              className="flex gap-[.75rem] w-full justify-center items-center"
+            >
+              {Array.from(round).map((note, index) =>
+                note == " " ? (
+                  <div key={index + "-" + roundIndex}>-</div>
+                ) : (
+                  <div
+                    key={index}
+                    className="h-[3rem] w-[2rem] bg-border rounded-sm"
+                  ></div>
+                )
+              )}
+            </div>
+          ))}
       </div>
 
       {displayRoundWinPhase ? (
