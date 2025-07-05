@@ -5,6 +5,7 @@ import Home from "./components/Home/Home";
 import { SongsContextProvider } from "./context/SongsContext";
 import { Piano, Play, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
+import FreePlay from "./components/FreePlay/FreePlay";
 
 function App() {
   let location = useLocation();
@@ -43,7 +44,7 @@ function App() {
             <Link to={{ pathname: "/" }}>
               <Play width={40} height={40}></Play>
             </Link>
-            <Link to={{ pathname: "/" }}>
+            <Link to={{ pathname: "/free" }}>
               <Piano width={40} height={40}></Piano>
             </Link>
             <Link to={{ pathname: "/" }}>
@@ -54,6 +55,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/guessr" element={<Guessr />} />
+          <Route path="/free" element={<FreePlay />} />
         </Routes>
       </SongsContextProvider>
     </>

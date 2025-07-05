@@ -23,7 +23,7 @@ export function SongsContextProvider({ children }: { children: ReactNode }) {
           id: "wiiSports",
           title: "Wii Sports",
           notes: [
-            "1243215",
+            "124321 5",
             "345878531232",
             "345878124325699",
             "1243215",
@@ -38,20 +38,32 @@ export function SongsContextProvider({ children }: { children: ReactNode }) {
         {
           id: "wiiShorts",
           title: "Wii sports (short)",
-          notes: ["1243215"],
+          notes: ["124321 5"],
           givenNotes: [[0, 1, 2]],
         },
         {
-          id: "starWars",
-          title: "Star Wars",
-          notes: ["1543285432854342"],
-          givenNotes: [[2, 3, 4]],
+          id: "starWarsMain",
+          title: "Star Wars (Main Theme)",
+          notes: ["1 5 4328 5 4328 5 4342"],
+          givenNotes: [[4, 5, 6]],
+        },
+        {
+          id: "starWarsForce",
+          title: "Star Wars (Force Theme)",
+          notes: ["36 7 898 3 36 7 838609"],
+          givenNotes: [[0, 1, 3]],
         },
         {
           id: "harryPotter",
           title: "Harry Potter",
           notes: ["36 876 09 7 6 875 73"],
           givenNotes: [[0, 3, 4]],
+        },
+        {
+          id: "tetris",
+          title: "Tetris",
+          notes: ["0 789 876 680 987 890866"],
+          givenNotes: [[0, 2, 3]],
         },
       ]);
     };
