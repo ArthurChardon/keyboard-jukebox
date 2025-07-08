@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import "./GuessrNote.css";
 import type { NoteResult } from "@/types/guessr.types";
 import { cn } from "@/lib/utils";
@@ -31,16 +31,17 @@ function GuessrNote({
   };
 
   const selfFocused = () => {
+    if (!inputRef.current) return;
     setFocused(true);
     emitFocus();
+    inputRef.current.select();
   };
 
   const selfBlurred = () => {
     setFocused(false);
   };
 
-  const manageInput = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log("mI", event);
+  const manageInput = (event: FormEvent<HTMLInputElement>) => {
     if (
       (event.nativeEvent as any).inputType === "deleteContentBackward" ||
       (event.nativeEvent as any).inputType === "deleteContentForward"
@@ -59,7 +60,7 @@ function GuessrNote({
         name={`note-${index}`}
         className="h-0 w-0"
         value={note ?? "-"}
-        onChange={(event) => manageInput(event)}
+        onInput={(event) => manageInput(event)}
         onFocus={() => selfFocused()}
         onBlur={() => selfBlurred()}
       ></input>

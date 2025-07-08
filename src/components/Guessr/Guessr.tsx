@@ -22,7 +22,6 @@ function Guessr({}: {}) {
   const { keyboards, keyToNote, noteToKey } = useKeyboardsContext();
 
   const computeSkipper = (direction: "up" | "down", index: number): number => {
-    console.log(triesSound);
     let skipper = 0;
     if (direction === "down") {
       while (
@@ -65,7 +64,7 @@ function Guessr({}: {}) {
   let displayRoundWinPhase = false;
 
   useEffect(() => {
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "Enter":
           setPhase(Phase.SUBMIT);
@@ -86,12 +85,14 @@ function Guessr({}: {}) {
               triesSound.length - 1
             )
           );
+          e.preventDefault();
           return;
 
         case "ArrowLeft":
           setCurrentIndex((index) =>
             Math.max(index - computeSkipper("down", index) - 1, 0)
           );
+          e.preventDefault();
           return;
       }
     };
@@ -144,10 +145,8 @@ function Guessr({}: {}) {
   if (phase === Phase.LOAD) return <div>LOADING</div>;
 
   const inputEmitted = (index: number, key: string) => {
-    console.log("iE", index, key);
     if (key === "DELETE") {
       const skipper = computeSkipper("down", index);
-      console.log("out", index, skipper);
       setCurrentIndex(index - 1 - skipper);
       removeNoteAtIndex(index);
       return;
