@@ -18,9 +18,19 @@ export enum AnimationPhase {
   NEXT_TO_GUESS = "next-to-guess",
 }
 
+export interface GuessrSongNote {
+  note: string;
+  given?: boolean;
+}
+
 export interface GuessrSong {
   id: string;
   title: string;
-  notes: string[];
-  givenNotes: number[][];
+  notes: GuessrSongNote[][];
+  keyboardType: KeyboardType;
+}
+
+export enum KeyboardType {
+  SIMPLE = "simple",
+  DOUBLE = "double",
 }
