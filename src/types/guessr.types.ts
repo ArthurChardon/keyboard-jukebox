@@ -32,5 +32,6 @@ export interface GuessrSong {
 
 export enum KeyboardType {
   SIMPLE = "simple",
+  SIMPLE2 = "simple2",
   DOUBLE = "double",
 }

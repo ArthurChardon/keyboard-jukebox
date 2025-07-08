@@ -28,6 +28,7 @@ function FreePlay({}: {}) {
         <SelectContent>
           <SelectItem value={KeyboardType.SIMPLE}>Simple</SelectItem>
           <SelectItem value={KeyboardType.DOUBLE}>Double</SelectItem>
+          <SelectItem value={KeyboardType.SIMPLE2}>Simple 2</SelectItem>
         </SelectContent>
       </Select>
       <Keyboard keyboardType={keyboardType}></Keyboard>

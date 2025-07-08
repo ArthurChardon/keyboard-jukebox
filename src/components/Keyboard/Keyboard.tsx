@@ -185,6 +185,10 @@ function Keyboard({
     if (keyboardType === KeyboardType.DOUBLE) {
       playPianoLong({ id: refPressed });
     }
+
+    if (keyboardType === KeyboardType.SIMPLE2) {
+      playPianoLong({ id: refPressed });
+    }
   };
 
   return (

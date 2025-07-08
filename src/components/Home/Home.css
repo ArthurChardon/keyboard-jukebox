@@ -40,7 +40,7 @@
     font-size: 2rem;
     color: var(--accent-foreground);
     transition: all 0.35s;
-
+    line-height: 125%;
 
     &:hover {
         background-color: var(--accent);

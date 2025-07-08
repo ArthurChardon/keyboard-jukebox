@@ -13,7 +13,7 @@ function Home() {
           {songs.map((song) => (
             <Link
               key={song.id}
-              className="guessr-song"
+              className="guessr-song truncate"
               to={{ pathname: "/guessr", search: `?id=${song.id}` }}
             >
               {song.title}
