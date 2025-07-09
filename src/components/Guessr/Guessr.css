@@ -43,3 +43,62 @@
         font-variation-settings: 'wght' 900;
     }
 }
+
+.tries-container {
+    padding: 0 8rem;
+    overflow: auto hidden;
+    overflow-clip-margin: 10rem;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 8rem;
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8 !important;
+    }
+
+    &::-webkit-scrollbar-track {
+        transform: scale(1, 0);
+        background-color: var(--background);
+        height: 2px;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar {
+        scrollbar-width: none;
+        width: .5rem;
+        height: .5rem;
+        background-color: var(--background);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        opacity: 0;
+        transition: background-color .2s;
+        background-color: var(--background);
+        border-radius: 4px;
+    }
+
+    &:hover::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+    }
+
+}
+
+.backdrop {
+    position: absolute;
+    backdrop-filter: blur(6px);
+    mask-image: linear-gradient(to right, white 90%, transparent);
+    background: linear-gradient(to right, white 5%, transparent);
+    z-index: 10;
+    width: 10%;
+    height: 95%;
+    pointer-events: none;
+}
+
+.backdrop-right {
+    mask-image: linear-gradient(to left, white 90%, transparent);
+    background: linear-gradient(to left, white 5%, transparent);
+}

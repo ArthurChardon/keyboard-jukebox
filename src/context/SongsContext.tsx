@@ -249,6 +249,42 @@ export function SongsContextProvider({ children }: { children: ReactNode }) {
           ],
           keyboardType: KeyboardType.SIMPLE2,
         },
+        {
+          id: "bellaCiao",
+          title: "Bella Ciao",
+          notes: [
+            [
+              { note: "E", given: true },
+              { note: "A" },
+              { note: "B" },
+              { note: "C+", given: true },
+              { note: "A", given: true },
+              { note: " " },
+              { note: "E" },
+              { note: "A" },
+              { note: "B" },
+              { note: "C+" },
+              { note: "A" },
+            ],
+
+            [
+              { note: "E", given: true },
+              { note: "A" },
+              { note: "B" },
+              { note: "C+", given: true },
+              { note: "B", given: true },
+              { note: " " },
+              { note: "A" },
+              { note: "C+" },
+              { note: "B" },
+              { note: "A" },
+              { note: "E+" },
+              { note: "E+" },
+              { note: "E+" },
+            ],
+          ],
+          keyboardType: KeyboardType.SIMPLE,
+        },
       ]);
     };
 

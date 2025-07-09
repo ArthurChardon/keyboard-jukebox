@@ -35,6 +35,11 @@ function GuessrNote({
     setFocused(true);
     emitFocus();
     inputRef.current.select();
+    inputRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
   };
 
   const selfBlurred = () => {
