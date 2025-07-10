@@ -20,6 +20,19 @@ function Home() {
             </Link>
           ))}
         </div>
+
+        <h2 className="game-home-title mt-[2rem]">Playr</h2>
+        <div className="guessr-songs">
+          {songs.map((song) => (
+            <Link
+              key={song.id}
+              className="guessr-song truncate"
+              to={{ pathname: "/playr", search: `?id=${song.id}` }}
+            >
+              {song.title}
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );

@@ -247,7 +247,11 @@ function Guessr({}: {}) {
       </div>
 
       {phase !== Phase.WIN_GAME && (
-        <div className="flex gap-[.75rem] mt-[2rem] w-full justify-center h-[12rem] items-center">
+        <div className="relative overflow-visible">
+          <div className="backdrop left-0"></div>
+          <div className="backdrop backdrop-right right-0"></div>
+          <div className="tries-container w-full flex">
+            <div className="flex gap-[.75rem] w-max justify-center h-[12rem] items-center mx-auto">
           {Array.from(triesSound).map((tryNote, index) =>
             tryNote.note == " " ? (
               <div key={index + "-" + roundIndex}>-</div>
@@ -267,7 +271,13 @@ function Guessr({}: {}) {
               ></GuessrNote>
             )
           )}
-          <input ref={submitInput} type="submit" className="h-0 w-0"></input>
+              <input
+                ref={submitInput}
+                type="submit"
+                className="h-0 w-0"
+              ></input>
+            </div>
+          </div>
         </div>
       )}
       {phase === Phase.WIN_GAME && (

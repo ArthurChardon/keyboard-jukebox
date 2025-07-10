@@ -7,6 +7,7 @@ import { Piano, Play, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import FreePlay from "./components/FreePlay/FreePlay";
 import { KeyboardContextProvider } from "./context/KeyboardsContext";
+import Playr from "./components/Playr/Playr";
 
 function App() {
   let location = useLocation();
@@ -14,7 +15,24 @@ function App() {
 
   useEffect(() => {
     switch (location.pathname) {
+      case "/guessr":
+        setHeaderTitle(
+          <h1 className="guessr--title leading-none w-fit h-fit text-center">
+            Guessr
+          </h1>
+        );
+        break;
+
+      case "/playr":
+        setHeaderTitle(
+          <h1 className="guessr--title leading-none w-fit h-fit text-center">
+            Playr
+          </h1>
+        );
+        break;
+
       case "/":
+      default:
         setHeaderTitle(
           <h1
             aria-label="Jukebox Keyboard"
@@ -22,14 +40,6 @@ function App() {
           >
             <div className="home--title--segment">Jukebox</div>
             <div className="home--title--segment ml-[1.5rem]">Keyboard</div>
-          </h1>
-        );
-        break;
-
-      case "/guessr":
-        setHeaderTitle(
-          <h1 className="guessr--title leading-none w-fit h-fit text-center">
-            Guessr
           </h1>
         );
         break;
@@ -57,6 +67,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/guessr" element={<Guessr />} />
+            <Route path="/playr" element={<Playr />} />
             <Route path="/free" element={<FreePlay />} />
           </Routes>
         </KeyboardContextProvider>

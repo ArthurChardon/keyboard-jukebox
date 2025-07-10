@@ -154,7 +154,6 @@ export function SongsContextProvider({ children }: { children: ReactNode }) {
               { note: "A" },
               { note: " " },
               { note: "B" },
-              { note: "" },
               { note: "C+" },
               { note: "E" },
               { note: "C+" },

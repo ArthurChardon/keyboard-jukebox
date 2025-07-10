@@ -2,7 +2,10 @@ import { KeyboardType } from "@/types/guessr.types";
 import { createContext, useContext, type ReactNode } from "react";
 
 interface KeyboardContextType {
-  keyboards: Record<KeyboardType, any[]>;
+  keyboards: Record<
+    KeyboardType,
+    { key: string; label: string; ref: string; note?: string }[]
+  >;
   noteToKey: (keyboardType: KeyboardType, note: string) => string;
   keyToNote: (keyboardType: KeyboardType, key: string) => string;
 }
