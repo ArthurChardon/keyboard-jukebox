@@ -28,10 +28,13 @@ export interface GuessrSong {
   title: string;
   notes: GuessrSongNote[][];
   keyboardType: KeyboardType;
+  tags: string[];
 }
 
 export enum KeyboardType {
   SIMPLE = "simple",
   SIMPLE2 = "simple2",
   DOUBLE = "double",
+  ALPHABET = "alphabet",
+  COMPLEX = "complex",
 }

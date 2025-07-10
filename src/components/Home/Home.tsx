@@ -8,7 +8,10 @@ function Home() {
   return (
     <>
       <div className="flex flex-col justify-center pt-[2rem]">
-        <h2 className="game-home-title">Guessr</h2>
+        <div className="flex items-center gap-[5rem] mb-[2rem]">
+          <h2 className="game-home-title">Guessr</h2>
+          <p className="tagline">Deviner les notes</p>
+        </div>
         <div className="guessr-songs">
           {songs.map((song) => (
             <Link
@@ -21,7 +24,10 @@ function Home() {
           ))}
         </div>
 
-        <h2 className="game-home-title mt-[2rem]">Playr</h2>
+        <div className="flex items-center gap-[5rem] my-[2rem]">
+          <h2 className="game-home-title">Playr</h2>
+          <p className="tagline">Jouer les morceaux</p>
+        </div>
         <div className="guessr-songs">
           {songs.map((song) => (
             <Link

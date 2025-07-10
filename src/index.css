@@ -30,6 +30,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Baloo";
+  src: url("./fonts/BalooBhaijaan2-VariableFont_wght.ttf");
+  font-weight: 100 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Quicksand";
+  src: url("./fonts/Quicksand-VariableFont_wght.ttf");
+  font-weight: 100 800;
+  font-style: normal;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -160,6 +174,7 @@ h1 {
 h2 {
   font-family: Omegle;
   font-size: 4rem;
+  line-height: 100%;
 }
 
 @keyframes grayScale {

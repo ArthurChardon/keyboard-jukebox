@@ -48,11 +48,17 @@
 .header {
   position: sticky;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  top: 0;
   align-items: center;
   gap: 2rem;
   height: 8rem;
   padding: 1rem;
+  border-radius: 5px;
+  border-bottom: 5px solid var(--accent);
+  margin-bottom: 2rem;
+  background-color: var(--background);
+  z-index: 9999;
 
   nav {
     width: fit-content;

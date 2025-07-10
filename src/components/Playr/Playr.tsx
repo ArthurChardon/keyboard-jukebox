@@ -10,16 +10,11 @@ import GuessrValidatedNote from "../Guessr/GuessrValidatedNote/GuessrValidatedNo
 function Playr({}: {}) {
   const { songs } = useSongsContext();
   const [searchParams] = useSearchParams();
-  const [songId, setSongId] = useState(searchParams.get("id"));
+  const [songId, _] = useState(searchParams.get("id"));
 
-  const { keyboards, noteToKey } = useKeyboardsContext();
+  const { noteToKey } = useKeyboardsContext();
 
   const [gameSound, setGameSound] = useState<GuessrSong | null>(null);
-  const [keyboard, setKeyboard] = useState<any>(null);
-
-  useEffect(() => {
-    setKeyboard(gameSound ? keyboards[gameSound.keyboardType] : null);
-  }, [keyboards, gameSound]);
 
   useEffect(() => {
     const song = songs.find((song) => song.id == songId) ?? null;

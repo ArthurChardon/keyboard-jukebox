@@ -11,7 +11,6 @@
     width: fit-content;
     height: fit-content;
     line-height: 120%;
-    margin-bottom: 2rem;
 
     &::after {
         content: "";
@@ -48,4 +47,15 @@
         color: #fff;
         box-shadow: -0.3em -0.3em var(--accent-shadow);
     }
+}
+
+.tagline {
+    font-family: Quicksand;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--foreground);
+    opacity: 0.5;
+    letter-spacing: -.05em;
+    line-height: 100%;
+    margin-top: .8rem;
 }

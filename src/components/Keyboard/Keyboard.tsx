@@ -17,8 +17,9 @@ function Keyboard({
   }, [keyboardType]);
 
   const soundsPath = "/sounds/piano/";
+  /*
   const shortSoundsPath = "/sounds/piano/short/";
-  const shortSoundExtension = ".mp3";
+  const shortSoundExtension = ".mp3";*/
 
   const [playPiano] = useSound(soundsPath + "piano.mp3", {
     volume: 0.4,
@@ -182,11 +183,12 @@ function Keyboard({
       }
       return;
     }
-    if (keyboardType === KeyboardType.DOUBLE) {
-      playPianoLong({ id: refPressed });
-    }
-
-    if (keyboardType === KeyboardType.SIMPLE2) {
+    if (
+      keyboardType === KeyboardType.DOUBLE ||
+      keyboardType === KeyboardType.SIMPLE2 ||
+      keyboardType === KeyboardType.ALPHABET ||
+      keyboardType === KeyboardType.COMPLEX
+    ) {
       playPianoLong({ id: refPressed });
     }
   };

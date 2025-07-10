@@ -1,0 +1,11 @@
+.accent-anim {
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    transition: all 0.5s;
+
+    &:hover {
+        box-shadow: inset 0 0 0 2em var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+    }
+}

@@ -19,9 +19,9 @@ import { cn } from "@/lib/utils";
 function Guessr({}: {}) {
   const { songs } = useSongsContext();
   const [searchParams] = useSearchParams();
-  const [songId, setSongId] = useState(searchParams.get("id"));
+  const [songId, _] = useState(searchParams.get("id"));
 
-  const { keyboards, keyToNote, noteToKey } = useKeyboardsContext();
+  const { noteToKey } = useKeyboardsContext();
 
   const computeSkipper = (direction: "up" | "down", index: number): number => {
     let skipper = 0;
@@ -53,7 +53,6 @@ function Guessr({}: {}) {
   const [roundSound, setRoundSound] = useState<GuessrSongNote[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [validatedRoundSound, setValidatedRoundSound] = useState<string[]>([]);
-  const [keyboard, setKeyboard] = useState<any>(null);
   const [askHint, setAskHint] = useState(false);
   const [resetRound, setResetRound] = useState(0);
 
@@ -105,10 +104,6 @@ function Guessr({}: {}) {
   }, [triesSound]);
 
   useEffect(() => {
-    setKeyboard(gameSound ? keyboards[gameSound.keyboardType] : null);
-  }, [keyboards, gameSound]);
-
-  useEffect(() => {
     setGameSound(songs.find((song) => song.id == songId) ?? null);
     setPhase(Phase.GUESS);
   }, [songs, songId]);
@@ -131,7 +126,7 @@ function Guessr({}: {}) {
 
   useEffect(() => {
     setTriesSound(
-      Array.from({ length: roundSound.length }, (v, k) => ({
+      Array.from({ length: roundSound.length }, (_, k) => ({
         note:
           roundSound[k].note == " "
             ? " "
@@ -142,7 +137,10 @@ function Guessr({}: {}) {
       }))
     );
     setCurrentIndex(0);
-
+    console.log(
+      "ROUND SOUND notes",
+      roundSound.map((notes) => notes.note)
+    );
   }, [roundSound, resetRound]);
 
   if (phase === Phase.LOAD) return <div>LOADING</div>;
@@ -173,7 +171,7 @@ function Guessr({}: {}) {
 
   const revealTriesSoundRound = () => {
     setTriesSound(() =>
-      Array.from({ length: roundSound.length }, (v, k) => ({
+      Array.from({ length: roundSound.length }, (_, k) => ({
         note: roundSound[k].note,
         result: NoteResult.CORRECT,
       }))
@@ -248,16 +246,15 @@ function Guessr({}: {}) {
 
   return (
     <>
-      <div className="flex items-center justify-around">
+      <div className="flex items-center justify-around py-[1rem]">
         <h2>{gameSound?.title}</h2>
         <div className="flex gap-[1rem]">
           <Button
             className={cn(
               "size-fit p-[.5rem]",
-              askHint
-                ? "bg-accent-foreground hover:bg-accent-foreground/50"
-                : "bg-accent hover:bg-accent/50"
+              askHint ? "bg-accent hover:bg-accent/50 text-white!" : ""
             )}
+            variant={"accent"}
             size={"icon"}
             onClick={() => {
               toggleHints();
@@ -273,7 +270,8 @@ function Guessr({}: {}) {
             onClick={() => {
               revealTriesSoundRound();
             }}
-            className="bg-accent hover:bg-accent/50 size-fit p-[.5rem]"
+            variant={"accent"}
+            className="size-fit p-[.5rem]"
             size={"icon"}
           >
             <Eye className="size-[2rem]" width={30} height={30}></Eye>
@@ -282,7 +280,8 @@ function Guessr({}: {}) {
             onClick={() => {
               setResetRound((reset) => reset + 1);
             }}
-            className="bg-accent hover:bg-accent/50 size-fit p-[.5rem]"
+            variant={"accent"}
+            className="size-fit p-[.5rem]"
             size={"icon"}
           >
             <RefreshCw
