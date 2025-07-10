@@ -29,8 +29,6 @@ input:focus+.guessr-note {
     }
 }
 
-
-
 .guessr-note {
     position: relative;
 }
@@ -53,4 +51,10 @@ input:focus+.guessr-note {
 
 .note-result-wrong::after {
     background-color: red;
+}
+
+.guessr-note--hint {
+    position: absolute;
+    top: 0;
+    right: 0;
 }

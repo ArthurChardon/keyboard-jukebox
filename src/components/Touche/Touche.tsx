@@ -24,7 +24,9 @@ function Touche({
 
   return (
     <>
-      <Button onClick={() => clicked()}>{keyToPress.toUpperCase()}</Button>
+      <Button size={"icon"} onClick={() => clicked()}>
+        {keyToPress.toUpperCase()}
+      </Button>
     </>
   );
 }

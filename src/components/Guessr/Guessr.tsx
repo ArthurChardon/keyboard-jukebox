@@ -7,12 +7,14 @@ import {
   Phase,
 } from "@/types/guessr.types";
 import GuessrValidatedNote from "./GuessrValidatedNote/GuessrValidatedNote";
-import { CountdownProgress } from "../ui/countdown-progress";
 import { useSongsContext } from "@/context/SongsContext";
 import { useSearchParams } from "react-router-dom";
 import Keyboard from "../Keyboard/Keyboard";
 import GuessrNote from "./GuessrNote/GuessrNote";
 import { useKeyboardsContext } from "@/context/KeyboardsContext";
+import { Button } from "../ui/button";
+import { CircleQuestionMark, Eye, RefreshCw } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function Guessr({}: {}) {
   const { songs } = useSongsContext();
@@ -52,6 +54,8 @@ function Guessr({}: {}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [validatedRoundSound, setValidatedRoundSound] = useState<string[]>([]);
   const [keyboard, setKeyboard] = useState<any>(null);
+  const [askHint, setAskHint] = useState(false);
+  const [resetRound, setResetRound] = useState(0);
 
   const [triesSound, setTriesSound] = useState<
     { note: string | null; result: NoteResult | null }[]
@@ -60,8 +64,6 @@ function Guessr({}: {}) {
   const [phase, setPhase] = useState(Phase.LOAD);
 
   const submitInput = useRef<HTMLInputElement>(null);
-
-  let displayRoundWinPhase = false;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -140,7 +142,8 @@ function Guessr({}: {}) {
       }))
     );
     setCurrentIndex(0);
-  }, [roundSound]);
+
+  }, [roundSound, resetRound]);
 
   if (phase === Phase.LOAD) return <div>LOADING</div>;
 
@@ -166,6 +169,24 @@ function Guessr({}: {}) {
 
   const focusGuessrNote = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  const revealTriesSoundRound = () => {
+    setTriesSound(() =>
+      Array.from({ length: roundSound.length }, (v, k) => ({
+        note: roundSound[k].note,
+        result: NoteResult.CORRECT,
+      }))
+    );
+  };
+
+  const revealTryIndex = (index: number) => {
+    setTriesSound((tries) =>
+      tries.map((tri, tryIndex) => ({
+        note: index === tryIndex ? roundSound[index].note : tri.note,
+        result: index === tryIndex ? NoteResult.CORRECT : tri.result,
+      }))
+    );
   };
 
   const submitTriesSound = () => {
@@ -210,12 +231,15 @@ function Guessr({}: {}) {
     setPhase(Phase.GUESS);
   };
 
+  const toggleHints = () => {
+    setAskHint((hint) => !hint);
+  };
+
   if (phase === Phase.SUBMIT) {
     submitTriesSound();
   }
 
   if (phase === Phase.WIN) {
-    displayRoundWinPhase = true;
     nextRound();
   }
 
@@ -224,8 +248,51 @@ function Guessr({}: {}) {
 
   return (
     <>
-      <h2>{gameSound?.title}</h2>
-
+      <div className="flex items-center justify-around">
+        <h2>{gameSound?.title}</h2>
+        <div className="flex gap-[1rem]">
+          <Button
+            className={cn(
+              "size-fit p-[.5rem]",
+              askHint
+                ? "bg-accent-foreground hover:bg-accent-foreground/50"
+                : "bg-accent hover:bg-accent/50"
+            )}
+            size={"icon"}
+            onClick={() => {
+              toggleHints();
+            }}
+          >
+            <CircleQuestionMark
+              className="size-[2rem]"
+              width={30}
+              height={30}
+            ></CircleQuestionMark>
+          </Button>
+          <Button
+            onClick={() => {
+              revealTriesSoundRound();
+            }}
+            className="bg-accent hover:bg-accent/50 size-fit p-[.5rem]"
+            size={"icon"}
+          >
+            <Eye className="size-[2rem]" width={30} height={30}></Eye>
+          </Button>
+          <Button
+            onClick={() => {
+              setResetRound((reset) => reset + 1);
+            }}
+            className="bg-accent hover:bg-accent/50 size-fit p-[.5rem]"
+            size={"icon"}
+          >
+            <RefreshCw
+              className="size-[2rem]"
+              width={30}
+              height={30}
+            ></RefreshCw>
+          </Button>
+        </div>
+      </div>
       <div className="flex flex-col gap-[.5rem] mt-[2rem]">
         {validatedRoundSound.map((round, i) => (
           <div
@@ -252,25 +319,27 @@ function Guessr({}: {}) {
           <div className="backdrop backdrop-right right-0"></div>
           <div className="tries-container w-full flex">
             <div className="flex gap-[.75rem] w-max justify-center h-[12rem] items-center mx-auto">
-          {Array.from(triesSound).map((tryNote, index) =>
-            tryNote.note == " " ? (
-              <div key={index + "-" + roundIndex}>-</div>
-            ) : (
-              <GuessrNote
-                key={index + "-" + roundIndex}
-                index={index}
-                note={tryNote.note}
-                result={tryNote.result}
-                setFocus={index === currentIndex}
-                emitInput={(key) => {
-                  inputEmitted(index, key);
-                }}
-                emitFocus={() => {
-                  focusGuessrNote(index);
-                }}
-              ></GuessrNote>
-            )
-          )}
+              {Array.from(triesSound).map((tryNote, index) =>
+                tryNote.note == " " ? (
+                  <div key={index + "-" + roundIndex}>-</div>
+                ) : (
+                  <GuessrNote
+                    key={index + "-" + roundIndex}
+                    index={index}
+                    note={tryNote.note}
+                    result={tryNote.result}
+                    setFocus={index === currentIndex}
+                    showHint={askHint && tryNote.result !== NoteResult.CORRECT}
+                    emitHint={() => revealTryIndex(index)}
+                    emitInput={(key) => {
+                      inputEmitted(index, key);
+                    }}
+                    emitFocus={() => {
+                      focusGuessrNote(index);
+                    }}
+                  ></GuessrNote>
+                )
+              )}
               <input
                 ref={submitInput}
                 type="submit"
@@ -303,16 +372,6 @@ function Guessr({}: {}) {
             </div>
           ))}
       </div>
-
-      {displayRoundWinPhase ? (
-        <CountdownProgress
-          className="w-1/2 mx-auto my-[2rem]"
-          duration={0}
-          callbackZero={() => nextRound()}
-        ></CountdownProgress>
-      ) : (
-        <div className="w-1/2 mx-auto my-[2rem] h-[0.5rem]"></div>
-      )}
       <Keyboard keyboardType={gameSound?.keyboardType}></Keyboard>
     </>
   );

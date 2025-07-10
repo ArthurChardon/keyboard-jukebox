@@ -1,13 +1,23 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type MouseEvent,
+} from "react";
 import "./GuessrNote.css";
 import type { NoteResult } from "@/types/guessr.types";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { CircleQuestionMark } from "lucide-react";
 
 function GuessrNote({
   note,
   index,
   result,
   setFocus,
+  showHint,
+  emitHint,
   emitInput,
   emitFocus,
 }: {
@@ -15,6 +25,8 @@ function GuessrNote({
   index: number;
   result: NoteResult | null;
   setFocus: boolean;
+  showHint: boolean;
+  emitHint: () => void;
   emitInput: (key: string) => void;
   emitFocus: () => void;
 }) {
@@ -58,6 +70,11 @@ function GuessrNote({
     if (keyInput) emitInput(keyInput);
   };
 
+  const askHint = (e: MouseEvent) => {
+    e.stopPropagation();
+    emitHint();
+  };
+
   return (
     <>
       <input
@@ -71,11 +88,24 @@ function GuessrNote({
       ></input>
       <div
         className={cn(
-          "guessr-note rounded-sm border-solid border-[3px]",
+          "guessr-note rounded-sm border-solid border-[3px] cursor-pointer",
           result ? "note-result-" + result : ""
         )}
         onClick={focusInput}
       >
+        {showHint && (
+          <div className="guessr-note--hint">
+            <Button
+              className="bg-accent hover:bg-accent/50 size-fit p-[.25rem]"
+              size={"icon"}
+              onClick={(e) => {
+                askHint(e);
+              }}
+            >
+              <CircleQuestionMark className="size-[1.5rem]"></CircleQuestionMark>
+            </Button>
+          </div>
+        )}
         <div className="guessr-note--note">{note}</div>
       </div>
     </>

@@ -1,17 +1,17 @@
 @keyframes slide-in-blurred-bottom {
     0% {
-        -webkit-transform: translateY(18rem) scaleY(2.5) scaleX(0.2);
-        transform: translateY(18rem) scaleY(2.5) scaleX(0.2);
-        -webkit-transform-origin: 50% 100%;
-        transform-origin: 50% 100%;
+        -webkit-transform: scaleY(0.5) scaleX(0.2);
+        transform: scaleY(0.5) scaleX(0.2);
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
         -webkit-filter: blur(40px);
         filter: blur(40px);
         opacity: 0;
     }
 
     100% {
-        -webkit-transform: translateY(0) scaleY(1) scaleX(1);
-        transform: translateY(0) scaleY(1) scaleX(1);
+        -webkit-transform: scaleY(1) scaleX(1);
+        transform: scaleY(1) scaleX(1);
         -webkit-transform-origin: 50% 50%;
         transform-origin: 50% 50%;
         -webkit-filter: blur(0);
@@ -25,11 +25,11 @@
     line-height: 100%;
     font-family: Suse;
     font-size: 12rem;
-    animation: letter-breathe 1s cubic-bezier(0.78, 0, 0.22, 1) forwards;
+    animation: letter-introduction 1s cubic-bezier(0.78, 0, 0.22, 1) forwards;
     transform-origin: 50% 50%;
 }
 
-@keyframes letter-breathe {
+@keyframes letter-introduction {
     from {
         opacity: 0;
         font-size: 6rem;
