@@ -5,41 +5,41 @@
 
 @font-face {
   font-family: 'Alba';
-  src: url("./fonts/alba.regular.ttf");
+  src: url("/fonts/alba.regular.ttf");
 }
 
 @font-face {
   font-family: 'AlbaS';
-  src: url("./fonts/alba.super.ttf");
+  src: url("/fonts/alba.super.ttf");
 }
 
 @font-face {
   font-family: 'AlbaM';
-  src: url("./fonts/alba.matter.ttf");
+  src: url("/fonts/alba.matter.ttf");
 }
 
 @font-face {
   font-family: 'Omegle';
-  src: url('./fonts/omegle.ttf');
+  src: url('/fonts/omegle.ttf');
 }
 
 @font-face {
   font-family: "Suse";
-  src: url("./fonts/SUSE-VariableFont_wght.ttf");
+  src: url("/fonts/SUSE-VariableFont_wght.ttf");
   font-weight: 100 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Baloo";
-  src: url("./fonts/BalooBhaijaan2-VariableFont_wght.ttf");
+  src: url("/fonts/BalooBhaijaan2-VariableFont_wght.ttf");
   font-weight: 100 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Quicksand";
-  src: url("./fonts/Quicksand-VariableFont_wght.ttf");
+  src: url("/fonts/Quicksand-VariableFont_wght.ttf");
   font-weight: 100 800;
   font-style: normal;
 }
