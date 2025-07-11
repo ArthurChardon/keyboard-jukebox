@@ -93,6 +93,27 @@ export function KeyboardContextProvider({ children }: { children: ReactNode }) {
       { key: "7", label: "Sol# 3", ref: "g3_diese", note: "G#" },
       { key: "8", label: "La# 3", ref: "a3_diese", note: "A#" },
     ],
+    complex_long: [
+      { key: "A", label: "La 2", ref: "a2", note: "A-" },
+      { key: "Z", label: "Si 2", ref: "b2", note: "B-" },
+      { key: "E", label: "Do 3", ref: "c3", note: "C" },
+      { key: "R", label: "Re 3", ref: "d3", note: "D" },
+      { key: "T", label: "Mi 3", ref: "e3", note: "E" },
+      { key: "Y", label: "Fa 3", ref: "f3", note: "F" },
+      { key: "U", label: "Sol 3", ref: "g3", note: "G" },
+      { key: "Q", label: "La 4", ref: "a3", note: "A" },
+      { key: "S", label: "Si 3 ", ref: "b3", note: "B" },
+      { key: "D", label: "Do 4", ref: "c4", note: "C+" },
+      { key: "F", label: "Re 4", ref: "d4", note: "D+" },
+      { key: "G", label: "Mi 4", ref: "e4", note: "E+" },
+      { key: "H", label: "Fa 4", ref: "f4", note: "F+" },
+      { key: "3", label: "Do# 3", ref: "c3_diese", note: "C#" },
+      { key: "4", label: "Re# 3", ref: "d3_diese", note: "D#" },
+      { key: "6", label: "Fa# 3", ref: "f3_diese", note: "F#" },
+      { key: "7", label: "Sol# 3", ref: "g3_diese", note: "G#" },
+      { key: "8", label: "La# 3", ref: "a3_diese", note: "A#" },
+      { key: "°", label: "Re# 4", ref: "d4_diese", note: "D#+" },
+    ],
   };
 
   const noteToKey = (keyboardType: KeyboardType, note: string): string => {

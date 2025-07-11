@@ -31,6 +31,9 @@ function FreePlay({}: {}) {
           <SelectItem value={KeyboardType.SIMPLE2}>Simple 2</SelectItem>
           <SelectItem value={KeyboardType.ALPHABET}>Alphabet</SelectItem>
           <SelectItem value={KeyboardType.COMPLEX}>Complex</SelectItem>
+          <SelectItem value={KeyboardType.COMPLEX_LONG}>
+            Complex Long
+          </SelectItem>
         </SelectContent>
       </Select>
       <Keyboard keyboardType={keyboardType}></Keyboard>

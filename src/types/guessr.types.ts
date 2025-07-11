@@ -37,4 +37,5 @@ export enum KeyboardType {
   DOUBLE = "double",
   ALPHABET = "alphabet",
   COMPLEX = "complex",
+  COMPLEX_LONG = "complex_long",
 }
