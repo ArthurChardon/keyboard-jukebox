@@ -11,7 +11,8 @@ input+.guessr-note {
     transition: all .3s ease;
 
     .guessr-note--note {
-        font-family: AlbaS;
+        font-family: Suse;
+        font-weight: 600;
         font-size: 6.6rem;
         line-height: 100%;
         transition: all .3s ease;

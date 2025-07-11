@@ -34,13 +34,16 @@ function App() {
       case "/":
       default:
         setHeaderTitle(
-          <h1
-            aria-label="Jukebox Keyboard"
-            className="home--title leading-none w-fit h-fit text-center"
-          >
-            <div className="home--title--segment">Jukebox</div>
-            <div className="home--title--segment ml-[1.5rem]">Keyboard</div>
-          </h1>
+          <Link to={{ pathname: "/" }}>
+            {" "}
+            <h1
+              aria-label="Jukebox Keyboard"
+              className="home--title leading-none w-fit h-fit text-center"
+            >
+              <div className="home--title--segment">Jukebox</div>
+              <div className="home--title--segment ml-[1.5rem]">Keyboard</div>
+            </h1>
+          </Link>
         );
         break;
     }
@@ -59,7 +62,7 @@ function App() {
               <Link to={{ pathname: "/free" }}>
                 <Piano width={40} height={40}></Piano>
               </Link>
-              <Link to={{ pathname: "/" }}>
+              <Link className="hidden" to={{ pathname: "/" }}>
                 <Trophy width={40} height={40}></Trophy>
               </Link>
             </nav>

@@ -6,7 +6,7 @@
 }
 
 .game-home-title {
-    font-family: AlbaS;
+    font-family: Omegle;
     position: relative;
     width: fit-content;
     height: fit-content;
@@ -35,7 +35,8 @@
     border-radius: 5px;
     border: 1px solid var(--accent-shadow);
     box-shadow: 0.3em 0.3em var(--accent-shadow);
-    font-family: Omegle;
+    font-family: Suse;
+    font-weight: 800;
     font-size: 2rem;
     color: var(--accent-foreground);
     transition: all 0.35s;
@@ -57,5 +58,4 @@
     opacity: 0.5;
     letter-spacing: -.05em;
     line-height: 100%;
-    margin-top: .8rem;
 }

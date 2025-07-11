@@ -1,7 +1,8 @@
 .guessr-validated-note--note {
     font-size: 2rem;
     line-height: 100%;
-    font-family: Alba;
+    font-family: Suse;
+    font-weight: 600;
 }
 
 .guessr-validated-note {
