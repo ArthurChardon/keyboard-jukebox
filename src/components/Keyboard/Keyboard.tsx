@@ -48,15 +48,6 @@ function Keyboard({
     soundsPath + "piano-longs.mp3",
     {
       volume: 0.2,
-      onplay: (...args: any[]) => {
-        //console.info("Sound started!", args);
-      },
-      onend: (...args: any[]) => {
-        //console.info("Sound ended!", args);
-      },
-      onstop: (...args: any[]) => {
-        //console.info("Sound stopped!", args);
-      },
       sprite: {
         a0: [2106, 1800],
         a0_diese: [4120, 1800],
